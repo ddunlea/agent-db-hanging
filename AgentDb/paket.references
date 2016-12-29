@@ -1,0 +1,4 @@
+FSharp.Core
+Newtonsoft.Json
+SQLProvider
+Mono.Data.Sqlite.Portable
