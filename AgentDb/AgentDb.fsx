@@ -23,7 +23,6 @@ type Sql = SqlDataProvider<
             ResolutionPath = ResolutionPath,
             IndividualsAmount = 1000,
             UseOptionTypes = true >
-let ctx = Sql.GetDataContext()
 
 let agent = MailboxProcessor.Start(fun (inbox:MailboxProcessor<String>) ->  
     let mutable callbacks = []
@@ -33,6 +32,7 @@ let agent = MailboxProcessor.Start(fun (inbox:MailboxProcessor<String>) ->
             let! msg = inbox.Receive()
             match msg with
             | _ ->
+              let ctx = Sql.GetDataContext()
               let row = ctx.Main.Events.Create()
               row.Timestamp <- DateTime.Now
               printfn "Submitting"
@@ -44,3 +44,4 @@ let agent = MailboxProcessor.Start(fun (inbox:MailboxProcessor<String>) ->
 )
 
 agent.Post "Hello"
+agent.Post "Hello Again"
