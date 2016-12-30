@@ -44,4 +44,10 @@ let agent = MailboxProcessor.Start(fun (inbox:MailboxProcessor<String>) ->
 let main argv =
     agent.Post "Hello"
     agent.Post "Hello again"
+    let waitLoop = async {
+        while agent.CurrentQueueLength > 0 do
+            printfn "Sleeping"
+            do! Async.Sleep 1000
+        }
+    Async.RunSynchronously waitLoop
     0
